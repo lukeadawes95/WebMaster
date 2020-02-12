@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Composition of WebRTC</title>
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+</head>
+
+<body>
+	<div id="header">
+		<div>
+			<div id="title">
+				<a href="index.html"><span>HTML5 WebRTC Tutorial</span></a>
+			</div>
+			<ul id="navigation">
+				<li>
+					<a href="index.html">Home</a>
+				</li>
+				<li class="selected">
+					<a href="composition-of-webrtc.html">Composition of WebRTC</a>
+				</li>
+				<li>
+					<a href="servers-and-protocols.html">Servers &amp; Protocols</a>
+				</li>
+				<li>
+					<a href="security.html">Security</a>
+				</li>
+				<li>
+					<a href="architecture.html">Architecture</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="intro">
+    	<p>WebRTC is formed of several individual JavaScript APIs and protocols that work together to form the functionality of the software. Internet Engineering Task Force (IETF) standardise the protocols by Real-Time Communication in WEB-browsers Working group while the APIs are standardised by the Web Real-Time Communications Working Groupe of the World Wide Web Consortium (W3C).</p>
+    </div>
+	<div id="contents">
+   		<h2>Composition of WebRTC</h2>
+    	<div class="container">
+      		
+      		
+       		<h3>MediaStream API</h3>
+       		<p>This API, also known as getUserMedia() (gUM) is used by developers to access external device such as web camera and microphone and even the screen itself, from the web browser. It also manages the selection of user devices connected to the computer as there may be multiple web-cameras and microphones connected to the device. Another key feature of this API is it always ask the user for permission to use its devices or to fetch a strea.</p> 
+       		
+       		<p>This API can be demonstrated with a simple HTML page. It’ll show a simple video box and will ask the user’s for permission to use the selected camera and display a live stream from it. Click <a href="mediastream-api-test.html">here</a> to view demo. Below are screen shots of the HTML and JavaScript used to make the demo.</p>
+       		
+       		<a href="pictures/mediastream-api-html.PNG"><img src="pictures/mediastream-api-html.PNG" width="50%" class="left"></a>
+       		<a href="pictures/mediastream-api-js.PNG"><img src="pictures/mediastream-api-js.PNG" width="45%" class="right" style="margin-left: 30px"></a> 
+          
+            <p>As I previously stated, the gUM can be also be used to get input from a microphone. That means we can use the method to provide a source node for web audio. Below is a simple JavaScript function used to get audio from devices.</p>
+            
+            <a href="pictures/mediastream-api-audio-js.PNG"><img class="centre" src="pictures/mediastream-api-audio-js.PNG"></a>
+            
+			<p>Click <a href="https://webaudiodemos.appspot.com/AudioRecorder/index.html">here</a> to see a more advance exapmle where the gUM is used to get the audio from the device which can be recorded and saved to the device.</p>
+           
+            <p>gUM can be used to get data coming directly from the screen and not the camera or the mic (audio) which is also known as screencapture and can be useful in many way such as sharing your screen with other to demonstrate something in real time. An example of this can be seen here at <a href="https://html5-demos.appspot.com/static/getusermedia/screenshare.html">html5-demos</a>.</p>
+            
+            
+            
+          	<h3>RTCPeerConection API</h3>
+            <p>The RTCPeerConnection is the main API that provides all the communication capabilities for the WebRTC. It represents a WebRTC connection between a local computer and a remote peer while monitoring and maintaining the connection and breaking the connection when it’s no longer needed. It used Session Description Protocol (SPD) to negotiate the session’s parameters as there is no signalling in WebRTC, executes Interactive Connectivity Establishment (ICE) NAT traversal to deal with the process of connecting media though NATs, and encodes and decodes the media being send over the network.</p>
+            
+            <p>'Under the hood', RTCPeerConnection does a lot such as:
+            <ul>
+            	<li>Signal Processing: to remove noice from the audio and video.</li>
+            	<li>Codec selection and compression and decompression of the actual aduio and video.</li>
+            	<li>Finding the actual peer to peer route, through firewalls, NATs, relays ect.</li>
+            	<li>Security: encrypting the data so that a user's data is ful protected at all times.</li>
+            	<li>Managing the bandwith so that it only uses how ever much megabits or kilobits the device has.</li>
+            </ul></p>
+            
+            <p>The RTCPeerconnection can be simply created in a JavaScrip document. Below is a simple RTCPeerConnection JavaScript object.</p>
+            <a href="pictures/rtc-peerconnection-example.JPG"><img class="centre" src="pictures/rtc-peerconnection-example.JPG"></a>
+            <p>An example of the RTCPeerConnection can also be seen here at <a href="https://webrtc.github.io/samples/src/content/peerconnection/pc1/">https://webrtc.github.io/samples/src/content/peerconnection/pc1/</a></p>
+            
+            
+            <h3>RTCDataChannel API</h3>
+        	<p>The RTCDataChannel works with the RTCPeerConnection API and opens a channel between two peers where arbitrary data can be sent and received. This is very similar to the WebSocket API so that developers familiar with using WebSockets could also use a similar API for RTCDataChannel. However, what seperates RTCDataChannel is:
+            <ul>
+            	<li>Peer to peer connections with the lowest possible latency for doing this communication.</li>
+            	<li>RTCDataChannel can either be unreliable or reliable. For exmaple, in a game it's more important that the packets get there quickly than they're guaranteed to get there. Whereas file transfers, the files only useful if the entire file is delivered. This gived the developer freedom to choose which mode best suits their requirements.</li>
+            	<li>Standard DTLS encryption is used to make sure that packages sent across the data channel are fully encrypted on their way to the destination.</li>
+			</ul></p>
+            <p>RTCDataChannel is created by using the <code>var datachannel = peerconnection.createDataChannel(label);</code> constructor. A more advance exmaple of this can been seen <a href="https://simpl.info/rtcdatachannel/">here</a>. Below is a simple example of the structure of the API.</p>
+        	<a href="pictures/data-channel-example.JPG"><img class="centre" src="pictures/data-channel-example.JPG"></a></div>
+    	
+	</div>
+	<div id="footer">
+		<div>
+			<h2>About</h2>
+            <p> A website create for webmasters providing a turotial on WebRTC.</p>
+		</div>
+		<div align="center" style="max-width:728px; width: 100%; border:1px solid #bbbbbb; margin:0 auto 20px; padding:0 10px;"></div>
+	</div>
+</body>
+</html>

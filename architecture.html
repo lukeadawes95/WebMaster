@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>WebRTC Architecture</title>
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+</head>
+
+<body>
+<div id="header">
+            <div>
+                <div id="title">
+                    <a href="index.html"><span>HTML5 WebRTC Tutorial</span></a>
+                </div>
+                <ul id="navigation">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="composition-of-webrtc.html">Composition of WebRTC</a>
+                    </li>
+                    <li>
+                        <a href="servers-and-protocols.html">Servers &amp; Protocols</a>
+                    </li>
+                    <li>
+                        <a href="security.html">Security</a>
+                    </li>
+                    <li class="selected">
+                        <a href="architecture.html">Architecture</a>
+                    </li>
+                </ul>
+            </div>
+    </div>
+    <div id="intro">
+    	<p>The purpose of WebRTC is to support RTC applications that works across multiple browsers and platforms. It offers web application developers the power to create advance realtime multimedia applications on the web without needing to download and install third party software or the requirement of plugins.</p>
+    </div>
+	<div id="contents">
+   		<h2>WebRTC Architecture</h2>
+    	<div class="container">
+      		<p>To jump straight into it, the over architecture of a WebRTC application can be complex and looks something like this:</p>
+      		<a href="pictures/webrtc-architecture.PNG"><img class="centre" src="pictures/webrtc-architecture.PNG" width="70%"></a>
+			<p>There are two main layers of this architecture diagram which are:</p>
+			<ol>
+				<li>API for web developers layer which would most interest web application developers. This is the layer that contains all the WebRTC API such as MediaStream.</li>
+				<li>API for browser makers layer where they have WebRTC C++ API &amp; the capture/render hooks at their disposal.</li>
+			</ol>
+      		<table class="tg">
+				  <tr>
+					<th class="tg-yw4l">Name</th>
+					<th class="tg-h31u">Description</th>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">Web App</td>
+					<td class="tg-yw4l">A third<br>party application with video and audio capabilities powered by the web API for<br>RTC.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">Web API</td>
+					<td class="tg-yw4l">An API used by third party developers for developing web based videochat-like application.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">WebRTC Native C++ AP</td>
+					<td class="tg-yw4l">This layer allows browsers to effortless implement the Web API proposal</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">Transport / Session</td>
+					<td class="tg-yw4l">The session components are built by re-using components from libjingle, without using or requiring the xmpp/jingle protocol.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">RTP </td>
+					<td class="tg-yw4l">A network stack for Real Time Protocol.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">STUN / ICE</td>
+					<td class="tg-yw4l">A component allowing calls to use the STUN and ICE mechanisms to establish connections across various types of networks.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">Session Management</td>
+					<td class="tg-yw4l">An abstracted session layer, allowing for call setup and management layer. This leaves the protocol implementation decision to the application developer.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">Voice Engine</td>
+					<td class="tg-yw4l">VoiceEngineis a framework for the audio media chain, from sound card to the network.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">Video Engine</td>
+					<td class="tg-yw4l">VideoEngine is a framework video media chain for video, from camera to the network, and from network to the screen.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">VP8</td>
+					<td class="tg-yw4l">Video codec from the WebM Project. Well suited for RTC as it is designed for low latency.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">Video Jitter Buffer</td>
+					<td class="tg-yw4l">Dynamic Jitter Buffer for video. Helps conceal the effects of jitter and packet loss on overall video quality.</td>
+				  </tr>
+				  <tr>
+					<td class="tg-yw4l">Image Enchancements </td>
+					<td class="tg-yw4l">For example, removes video noise from the image capture by the webcam.</td>
+				  </tr>
+			</table>
+      		<h3>Multi-Party Calls</h3>
+			<p>Browser-based multi-party calls takes full advantage of the features and benefits of WebRTC. There are a variety of different architectures that are suitable for the implementation of multi-party calls and here are some of them.</p>
+      		
+       		<a href="pictures/peer-to-peer.PNG"><img class="centre" src="pictures/peer-to-peer.PNG"></a>
+       		
+       		<p>Peer-to-peer simple two party case where two peers are linked, but as you start to add more peers to the mix, things can get a litter more complex. One approach that some people use is a mesh, where every peer is connected to every other peer in the call. This is really simple because there’s no servers or anything involved, other than the signalling stuff. However, this architecture works by every peer sending and copying data to every other peer which can result in CPU and bandwidth cost. Depending on the media that’s being sent (for audio it can be higher than video), the number of peers that can be supported by the mesh architecture is limited, especially if one peer is a mobile device.</p>
+       		
+       		<a href="pictures/mesh-architecture.PNG"><img class="centre" src="pictures/mesh-architecture.PNG"></a>
+            
+            <p>To deal with that problem, another architecture can be used which is referred to as the ‘star’ architecture. With this architecture, the most capable device is picked to be what is called the focus for the call. The focus is the part that’s actually responsible for taking the data and sending a copy to each of the other endpoints.</p>
+            
+            <a href="pictures/star-architecture.PNG"><img class="centre" src="pictures/star-architecture.PNG"></a>
+            
+            <p>The star architecture is a satisfactory solution, but as multiple HD video stream begin to build up in the party, the job for a focus becomes difficult. Therefore, for a most robust multi-party call, Multipoint Control Unit (MCU) is the best solution. This is a server that is used to relay substantial amounts of audio and video or in other words, to bridge video conferencing connections. It can do various things such as selective stream forwarding, mix audio or video data, and recording. MUC is designed to take care of everything, so if one peer drops out,  the whole conference won’t be interrupted.</p>
+            
+            <a href="pictures/mcu-architecture.JPG"><img class="centre" src="pictures/mcu-architecture.JPG"></a>
+
+       	</div>
+	</div>
+	<div id="footer">
+		<div>
+			<h2>About</h2>
+            <p> A website create for webmasters providing a turotial on WebRTC.</p>
+		</div>
+		<div align="center" style="max-width:728px; width: 100%; border:1px solid #bbbbbb; margin:0 auto 20px; padding:0 10px;"></div>
+	</div>
+</body>
+</html>
